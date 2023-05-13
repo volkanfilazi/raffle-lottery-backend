@@ -3,6 +3,8 @@ const connectDb = require("./config/dbConnection")
 const cors = require('cors')
 const userRouter = require("./routers/userRouter")
 const raffleRouter = require("./routers/raffleRouter")
+const depositRouter = require("./routers/depositRouter")
+const withdrawRouter = require("./routers/withdrawRouter")
 const errorHandler = require("./middleware/errorHandler")
 
 
@@ -16,6 +18,8 @@ server.use(cors({
 server.use(express.json())
 server.use('/api/user', userRouter)
 server.use('/api', raffleRouter)
+server.use('/api/transaction', depositRouter)
+server.use('/api/transaction', withdrawRouter)
 server.use(errorHandler)
 
 
