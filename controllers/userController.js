@@ -10,18 +10,15 @@ const createUser = asyncHandler(async (req, res) => {
     const checkEmail = await User.findOne({ email })
 
     if (!username && !email && !password) {
-      res.status(400)
-      throw new Error("All inputs are required")
+      res.status(400).json({ message: "all inputs are required"})
     } else if (!email) {
-      res.status(400)
-      throw new Error("Email is required")
+      res.status(400).json({ message: "email is required"})
     } else if (!username) {
-      throw new Error("Username is required")
+      res.status(400).json({ message: "username is required"})
     } else if (!password) {
-      throw new Error("Password is required")
+      res.status(400).json({ message: "password is required"})
     } else if (checkEmail) {
-      res.status(400)
-      throw new Error("There is already this email address")
+      res.status(400).json({ message: "There is already this email address"})
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
@@ -43,8 +40,8 @@ const createUser = asyncHandler(async (req, res) => {
         balance: newUser.balance
       })
     } else {
-      res.status(400)
-      throw new Error("User is not valid")
+      res.status(401)
+      throw new Error("Please fill all inputs")
     }
   } catch (error) {
     res.status(400).json({ error: "User is not valid" })
@@ -115,7 +112,7 @@ const login = asyncHandler( async(req, res) =>{
     const accessToken = jwt.sign({
       user:{
         _id: user.id,
-        name: user.name,
+        username: user.username,
         email: user.email,
         admin: user.admin
       }
@@ -124,7 +121,7 @@ const login = asyncHandler( async(req, res) =>{
     )
     res.status(201).json({
       _id: user._id,
-      name: user.name,
+      name: user.username,
       email: user.email,
       admin: user.admin,
       token: accessToken

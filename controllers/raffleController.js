@@ -76,9 +76,11 @@ const joinRaffle = asyncHandler( async (req, res) =>{
       res.status(400).json({ error: "User is already joined this raffle"})
     }
 
-    raffle.participants.push(userId)
+    if(!raffle.participants.includes(userId)){
+      raffle.participants.push(userId)
     await raffle.save();
     res.status(200).json({ message: "User successfully joined the raffle"})
+    }
   } catch (error) {
     res.status(500).json({ error: error.message})
   }

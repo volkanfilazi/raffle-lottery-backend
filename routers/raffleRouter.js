@@ -3,7 +3,7 @@ const { createRaffle, getRaffles, joinRaffle, deleteRaffle, manuelResultRaffle }
 const validateToken = require("../middleware/validateTokenHandler")
 
 router.post("/raffle",validateToken, createRaffle)
-router.get("/raffles",validateToken, getRaffles)
+router.get("/raffles", getRaffles)
 router.post("/raffle/join",validateToken, joinRaffle)
 router.post("/raffle/start/:id",validateToken, manuelResultRaffle)
 router.delete("/raffle/:id",validateToken, deleteRaffle)
