@@ -123,8 +123,13 @@ const manuelResultRaffle = asyncHandler(async (req, res) => {
 
     winner.balance += raffle.giftBalance
     await winner.save()
+    raffle.winner = winner
+    if(raffle.winner){
+      raffle.available = false
+    }
+    await raffle.save()
 
-    return res.status(200).json({ message: "Raffle result announced", winner })
+    return res.status(200).json(raffle.winner)
   } catch (error) {
     console.error(error)
     return res.status(500).json({ error: "An error occurred while announcing the raffle result" })
@@ -133,7 +138,9 @@ const manuelResultRaffle = asyncHandler(async (req, res) => {
 
 const getASingleRaffle = asyncHandler( async (req, res) =>{
   try {
-    const singleRaffle = await Raffle.findById(req.params.id).populate('participants')
+    const singleRaffle = await Raffle.findById(req.params.id)
+    .populate('participants')
+    .populate('winner')
     if(!singleRaffle){
       return res.status(400).json({ error: "Raffle id not found"})
     }
