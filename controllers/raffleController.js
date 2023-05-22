@@ -107,7 +107,8 @@ const deleteRaffle = asyncHandler(async (req, res) => {
 
 const manuelResultRaffle = asyncHandler(async (req, res) => {
   try {
-    const raffle = await Raffle.findById(req.params.id)
+    const { raffleId } = req.body
+    const raffle = await Raffle.findById(raffleId)
     if (!raffle) {
       return res.status(400).json({ error: "Raffle id not found" })
     }
@@ -130,4 +131,16 @@ const manuelResultRaffle = asyncHandler(async (req, res) => {
   }
 })
 
-module.exports = { createRaffle, getRaffles, joinRaffle, deleteRaffle, manuelResultRaffle }
+const getASingleRaffle = asyncHandler( async (req, res) =>{
+  try {
+    const singleRaffle = await Raffle.findById(req.params.id).populate('participants')
+    if(!singleRaffle){
+      return res.status(400).json({ error: "Raffle id not found"})
+    }
+    res.status(200).json(singleRaffle)
+  } catch (error) {
+    return res.status(400).json({ error: "An error occured while get single raffle"})
+  }
+})
+
+module.exports = { createRaffle, getRaffles, joinRaffle, deleteRaffle, manuelResultRaffle, getASingleRaffle }
