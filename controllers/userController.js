@@ -133,6 +133,7 @@ const login = asyncHandler( async(req, res) =>{
 })
 
 const currentUser = asyncHandler(async(req, res) =>{
-  res.json(req.user)
+  const user = await User.findById(req.user._id)
+  res.json(user)
 })
 module.exports = { createUser, getUsers, deleteUser, updateUser, getSingleUser, login, currentUser }
