@@ -41,7 +41,7 @@ const createRaffle = asyncHandler(async (req, res) => {
       res.status(201).json(newRaffle)
     }
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({ error: "please field all inputs" })
   }
 })
 

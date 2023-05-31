@@ -117,7 +117,7 @@ const login = asyncHandler( async(req, res) =>{
         admin: user.admin
       }
     },process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "45m"}
+    { expiresIn: "1m"}
     )
     res.status(201).json({
       _id: user._id,
@@ -126,6 +126,7 @@ const login = asyncHandler( async(req, res) =>{
       admin: user.admin,
       token: accessToken
     })
+    console.log(user);
   }else{
     res.status(401)
     throw new Error("email or password is not validd")
